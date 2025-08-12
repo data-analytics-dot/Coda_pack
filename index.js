@@ -1,4 +1,5 @@
 import express from 'express';
+import fetch from 'node-fetch'; // Required if your Node version < 18
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,20 +12,23 @@ const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
-  // Determine the target URL (required for redirect + logging)
+  // Extract target URL (required for redirect + logging)
   let targetUrl = req.query.target || req.query.url;
   if (!targetUrl) {
     return res.status(400).send('Missing target URL');
   }
 
-  // Extract SOP value (any param that's not target/url)
+  // Extract SOP value (any param that's not target/url/user)
   let sop = 'Unknown';
   for (const [key, value] of Object.entries(req.query)) {
-    if (key !== 'target' && key !== 'url') {
+    if (key !== 'target' && key !== 'url' && key !== 'user') {
       sop = value;
       break;
     }
   }
+
+  // Extract user email
+  let userEmail = req.query.user || 'Unknown';
 
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
@@ -33,22 +37,16 @@ app.get('/', async (req, res) => {
     rows: [
       {
         cells: [
-          { column: 'c-7GUpG84D4a', value: sop },
-          { column: 'c-pIIz5IhJJZ', value: today },
-          { column: 'c-pzBgI-pKEK', value: targetUrl },
-          { column: 'c c-brtrqo4tMV', value: userEmail },
-         
+          { column: 'c-7GUpG84D4a', value: sop },       // SOP
+          { column: 'c-pIIz5IhJJZ', value: today },     // Date
+          { column: 'c-pzBgI-pKEK', value: targetUrl }, // URL
+          { column: 'c-brtrqo4tMV', value: userEmail }, // User Email
         ],
       },
     ],
   };
 
   console.log('Payload being sent to Coda:', JSON.stringify(payload, null, 2));
-  console.log('Env check:', {
-    CODA_API_KEY: CODA_API_KEY ? 'SET' : 'MISSING',
-    CODA_DOC_ID,
-    CODA_TABLE_ID,
-  });
 
   // Log click to Coda before redirect
   try {
