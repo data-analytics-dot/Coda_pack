@@ -6,18 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
+ "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kristine1231/TraceTest.git"
+    "url": "git+https://github.com/data-analytics-dot/Coda_pack.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/Kristine1231/TraceTest/issues"
+    "url": "https://github.com/data-analytics-dot/Coda_pack/issues"
   },
-  "homepage": "https://github.com/Kristine1231/TraceTest#readme",
+  "homepage": "https://github.com/data-analytics-dot/Coda_pack#readme",
   "dependencies": {
     "express": "^5.1.0",
     "node-fetch": "^3.3.2"
