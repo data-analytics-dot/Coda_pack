@@ -1,10 +1,10 @@
 import express from 'express';
-import fetch from 'node-fetch'; // Required if your Node version < 18
+import fetch from 'node-fetch'; // Needed for Coda API calls
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Environment variables from Render (or your host)
+// Environment variables
 const CODA_API_KEY = process.env.CODA_API_KEY;
 const CODA_DOC_ID = process.env.CODA_DOC_ID;
 const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
@@ -12,13 +12,13 @@ const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
-  // Extract target URL (required for redirect + logging)
-  let targetUrl = req.query.target || req.query.url;
+  // Determine target URL
+  const targetUrl = req.query.target || req.query.url;
   if (!targetUrl) {
     return res.status(400).send('Missing target URL');
   }
 
-  // Extract SOP value (any param that's not target/url/user)
+  // Extract SOP (first non-target/url/user parameter)
   let sop = 'Unknown';
   for (const [key, value] of Object.entries(req.query)) {
     if (key !== 'target' && key !== 'url' && key !== 'user') {
@@ -27,20 +27,20 @@ app.get('/', async (req, res) => {
     }
   }
 
-  // Extract user email
-  let userEmail = req.query.user || 'Unknown';
+  // Extract user email from query string
+  const userEmail = req.query.user || 'Unknown User';
 
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-  // Coda payload
+  // Payload for Coda
   const payload = {
     rows: [
       {
         cells: [
-          { column: 'c-7GUpG84D4a', value: sop },       // SOP
-          { column: 'c-pIIz5IhJJZ', value: today },     // Date
-          { column: 'c-pzBgI-pKEK', value: targetUrl }, // URL
-          { column: 'c-brtrqo4tMV', value: userEmail }, // User Email
+          { column: 'c-7GUpG84D4a', value: sop },        // COL_SOP
+          { column: 'c-pIIz5IhJJZ', value: today },      // COL_DATE
+          { column: 'c-pzBgI-pKEK', value: targetUrl },  // COL_URL
+          { column: 'c-brtrqo4tMV', value: userEmail },  // COL_USER
         ],
       },
     ],
@@ -48,7 +48,6 @@ app.get('/', async (req, res) => {
 
   console.log('Payload being sent to Coda:', JSON.stringify(payload, null, 2));
 
-  // Log click to Coda before redirect
   try {
     const codaRes = await fetch(
       `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${encodeURIComponent(CODA_TABLE_ID)}/rows`,
