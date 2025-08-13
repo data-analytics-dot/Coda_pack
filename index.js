@@ -20,13 +20,15 @@ app.get('/', async (req, res) => {
   // Extract SOP value (any param that's not target/url)
   let sop = 'Unknown';
   for (const [key, value] of Object.entries(req.query)) {
-    if (key !== 'target' && key !== 'url') {
+    if (key !== 'target' && key !== 'url' && key !== 'user') {
       sop = value;
       break;
     }
   }
 
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+  let user = req.query.user || 'Unknown';
 
   // Coda payload
   const payload = {
@@ -36,6 +38,7 @@ app.get('/', async (req, res) => {
           { column: 'c-7GUpG84D4a', value: sop },
           { column: 'c-pIIz5IhJJZ', value: today },
           { column: 'c-pzBgI-pKEK', value: targetUrl },
+          { column: 'c-USER_COLUMN_ID', value: user },
         ],
       },
     ],
