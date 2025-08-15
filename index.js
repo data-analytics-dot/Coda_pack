@@ -60,7 +60,6 @@ console.log("Available SOP keys:", data.items.map(r => r.values['c-6GZ4CdfgQ2'])
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${CODA_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
