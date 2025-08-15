@@ -11,6 +11,13 @@ const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
+
+  const ua = req.headers['user-agent'] || '';
+if (ua.includes('Googlebot') || ua.includes('Slackbot')) {
+  return res.redirect(targetUrl);
+}
+
+  
   // Determine the target URL (required for redirect + logging)
   let targetUrl = req.query.target || req.query.url;
   if (!targetUrl) {
