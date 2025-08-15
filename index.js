@@ -23,11 +23,11 @@ app.get('/', async (req, res) => {
     const data = await response.json();
 
     // Find the row with matching COL_SOPKEY (replace c-rhlNSZ2BLc with your column ID)
-    const row = data.items.find(r => r.values['c-rhlNSZ2BLc'] === sopKey);
+    const row = data.items.find(r => r.values['c-6GZ4CdfgQ2'] === sopKey);
     if (!row) return res.status(404).send('SOP key not found');
 
     // COL_TARGET column ID = c-F0C8ROruiq
-    targetUrl = row.values['c-F0C8ROruiq'];
+    targetUrl = row.values['c-_kMwNG2VcE'];
   } catch (err) {
     console.error(err);
     return res.status(500).send('Error fetching SOP URL');
