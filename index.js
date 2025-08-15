@@ -21,9 +21,14 @@ app.get('/', async (req, res) => {
       { headers: { Authorization: `Bearer ${CODA_API_KEY}` } }
     );
     const data = await response.json();
+    
+console.log("SOP key from query:", sopKey);
+console.log("Available SOP keys:", data.items.map(r => r.values['c-rhlNSZ2BLc']));
 
     // Find the row with matching COL_SOPKEY (replace c-rhlNSZ2BLc with your column ID)
-    const row = data.items.find(r => r.values['c-6GZ4CdfgQ2'] === sopKey);
+    const row = data.items.find(r =>
+  r.values['c-6GZ4CdfgQ2']?.trim().toLowerCase() === sopKey?.trim().toLowerCase()
+);
     if (!row) return res.status(404).send('SOP key not found');
 
     // COL_TARGET column ID = c-F0C8ROruiq
