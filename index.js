@@ -42,10 +42,10 @@ if (ua.includes('Googlebot') || ua.includes('Slackbot')) {
     rows: [
       {
         cells: [
-          { column: 'c-7GUpG84D4a', value: sop },
-          { column: 'c-pIIz5IhJJZ', value: today },
-          { column: 'c-pzBgI-pKEK', value: targetUrl },
-          { column: 'c-brtrqo4tMV', value: user },
+          { column: 'c-rhlNSZ2BLc', value: sop },
+          { column: 'c-9RvcvQbDA4', value: today },
+          { column: 'c-F0C8ROruiq', value: targetUrl },
+          { column: 'c-Bnd91_0ohs', value: user },
         ],
       },
     ],
