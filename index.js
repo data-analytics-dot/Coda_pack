@@ -12,10 +12,9 @@ app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
 
-  const ua = req.headers['user-agent'] || '';
-if (ua.includes('Googlebot') || ua.includes('Slackbot')) {
-  return res.redirect(targetUrl);
-}
+ const ua = req.headers['user-agent'] || '';
+const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit)/i.test(ua);
+if (isBot) return res.redirect(307, targetUrl);
 
   
   // Determine the target URL (required for redirect + logging)
