@@ -47,15 +47,15 @@ setTimeout(() => processedTimestamps.delete(ts), 60 * 1000);
   }
 
 const ua = req.headers['user-agent'] || '';
-const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit|CodaBot)/i.test(ua);
+const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit|CodaBot|Preview)/i.test(ua);
 
-if (isBot) {
-  console.log("Bot detected, skipping log:", ua);
+// Skip bots OR requests with no user info
+if (isBot || (!user && !userName)) {
+  console.log("Prefetch/bot detected, skipping log:", ua);
   return res.redirect(307, targetUrl);
 }
 
 
- 
 
 const now = new Date();
 
