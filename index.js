@@ -16,7 +16,15 @@ app.get("/", async (req, res) => {
     return res.status(204).end(); // no content
   }
 
-  const { sop, sopName, target, user, userName, ts } = req.query;
+ const {
+  sop = "Unknown",
+  sopName = "Unknown",
+  target = "",
+  user = "Unknown",
+  userName = "Unknown",
+  ts
+} = req.query;
+
 
   if (!ts) {
     console.log("Missing ts, skipping log.");
@@ -46,13 +54,9 @@ if (isBot) {
 }
 
 
-  // Extract SOP value (any param that's not target/url)
-  let sop = req.query.sop || 'Unknown';
-  let sopName = req.query.sopName || 'Unknown';
-  let user = req.query.user || 'Unknown';
-  let userName = req.query.userName || 'Unknown';
+ 
 
-  const now = new Date();
+const now = new Date();
 
 // Shift to UTC+8
 const local = new Date(now.getTime() + (8 * 60 * 60 * 1000));
