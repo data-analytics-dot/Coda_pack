@@ -3,10 +3,12 @@ import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const processedTimestamps = new Set();
 // Environment variables from Render (or your host)
 const CODA_API_KEY = process.env.CODA_API_KEY;
 const CODA_DOC_ID = process.env.CODA_DOC_ID;
 const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
+
 
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
