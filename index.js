@@ -36,9 +36,20 @@ if (isBot) return res.redirect(307, targetUrl);
   let userName = req.query.userName || 'Unknown';
 
   const now = new Date();
-  const local = new Date(now.getTime() + (8 * 60 * 60 * 1000));
-  const dateStr = local.toISOString().split('T')[0];  // YYYY-MM-DD
-  const timeStr = local.toISOString().split('T')[1].split('.')[0];
+
+// Shift to UTC+8
+const local = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+
+// Date in YYYY-MM-DD
+const dateStr = local.toISOString().split('T')[0];
+
+// Time in 12-hour format with AM/PM
+let hours = local.getUTCHours();
+const minutes = local.getUTCMinutes().toString().padStart(2, '0');
+const seconds = local.getUTCSeconds().toString().padStart(2, '0');
+const ampm = hours >= 12 ? 'PM' : 'AM';
+hours = hours % 12 || 12; // convert 0 -> 12 for 12AM
+const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`;
 
   // Coda payload
   const payload = {
