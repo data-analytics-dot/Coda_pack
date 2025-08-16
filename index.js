@@ -20,8 +20,13 @@ app.get('/', async (req, res) => {
   }
 
 const ua = req.headers['user-agent'] || '';
-const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit)/i.test(ua);
-if (isBot) return res.redirect(307, targetUrl);
+const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit|CodaBot)/i.test(ua);
+
+if (isBot) {
+  console.log("Bot detected, skipping log:", ua);
+  return res.redirect(307, targetUrl);
+}
+
 
   // Extract SOP value (any param that's not target/url)
   let sop = req.query.sop || 'Unknown';
