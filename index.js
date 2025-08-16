@@ -36,8 +36,9 @@ if (isBot) return res.redirect(307, targetUrl);
   let userName = req.query.userName || 'Unknown';
 
   const now = new Date();
-  const dateStr = now.toISOString().split('T')[0];   // YYYY-MM-DD
-  const timeStr = now.toTimeString().split(' ')[0];
+  const local = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+  const dateStr = local.toISOString().split('T')[0];  // YYYY-MM-DD
+  const timeStr = local.toISOString().split('T')[1].split('.')[0];
 
   // Coda payload
   const payload = {
