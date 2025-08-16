@@ -10,14 +10,18 @@ const CODA_DOC_ID = process.env.CODA_DOC_ID;
 const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 
 
-app.get('/', async (req, res) => {
-  console.log('Incoming request query:', req.query);
+app.get("/", async (req, res) => {
+  // Ignore favicon or empty queries
+  if (req.path === "/favicon.ico" || Object.keys(req.query).length === 0) {
+    return res.status(204).end(); // no content
+  }
 
-  const ts = req.query.ts;
-if (!ts) {
-  console.log("Missing ts, skipping log.");
-  return res.redirect(req.query.target || req.query.url);
-}
+  const { sop, sopName, target, user, userName, ts } = req.query;
+
+  if (!ts) {
+    console.log("Missing ts, skipping log.");
+    return res.redirect(target || req.query.url);
+  }
 
 if (processedTimestamps.has(ts)) {
   console.log("Duplicate ts, skipping log:", ts);
