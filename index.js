@@ -25,10 +25,11 @@ app.get("/", async (req, res) => {
   ts
 } = req.query;
 
+console.log("Incoming request query:", req.query);
 
   if (!ts) {
     console.log("Missing ts, skipping log.");
-    return res.redirect(target || req.query.url);
+    return res.status(204).end();
   }
 
 if (processedTimestamps.has(ts)) {
