@@ -24,13 +24,7 @@ const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit)/i.test(ua);
 if (isBot) return res.redirect(307, targetUrl);
 
   // Extract SOP value (any param that's not target/url)
-  let sop = 'Unknown';
-  for (const [key, value] of Object.entries(req.query)) {
-    if (key !== 'target' && key !== 'url' && key !== 'user') {
-      sop = value;
-      break;
-    }
-  }
+  let sop = req.query.sop || 'Unknown';
   let sopName = req.query.sopName || 'Unknown';
   let user = req.query.user || 'Unknown';
   let userName = req.query.userName || 'Unknown';
