@@ -12,16 +12,16 @@ app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
 
- const ua = req.headers['user-agent'] || '';
-const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit)/i.test(ua);
-if (isBot) return res.redirect(307, targetUrl);
-
   
   // Determine the target URL (required for redirect + logging)
   let targetUrl = req.query.target || req.query.url;
   if (!targetUrl) {
     return res.status(400).send('Missing target URL');
   }
+
+const ua = req.headers['user-agent'] || '';
+const isBot = /(Googlebot|Slackbot|bingbot|facebookexternalhit)/i.test(ua);
+if (isBot) return res.redirect(307, targetUrl);
 
   // Extract SOP value (any param that's not target/url)
   let sop = 'Unknown';
@@ -31,10 +31,13 @@ if (isBot) return res.redirect(307, targetUrl);
       break;
     }
   }
-
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-
+  let sopName = req.query.sopName || 'Unknown';
   let user = req.query.user || 'Unknown';
+  let userName = req.query.userName || 'Unknown';
+
+  const now = new Date();
+  const dateStr = now.toISOString().split('T')[0];   // YYYY-MM-DD
+  const timeStr = now.toTimeString().split(' ')[0];
 
   // Coda payload
   const payload = {
@@ -42,9 +45,12 @@ if (isBot) return res.redirect(307, targetUrl);
       {
         cells: [
           { column: 'c-rhlNSZ2BLc', value: sop },
-          { column: 'c-9RvcvQbDA4', value: today },
+          { column: 'c-1Hs9TvZi8D', value: sopName },  
           { column: 'c-F0C8ROruiq', value: targetUrl },
           { column: 'c-Bnd91_0ohs', value: user },
+          { column: 'c-uOLRfDdGlm', value: userName }, 
+          { column: 'c-9RvcvQbDA4', value: dateStr },         
+          { column: 'c-EWB8bbzx0H', value: timeStr }, 
         ],
       },
     ],
