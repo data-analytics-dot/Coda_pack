@@ -13,16 +13,15 @@ const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
-   const ts = req.query.ts;
+  const ts = req.query.ts || Date.now().toString();
 
-if (!ts || processedTimestamps.has(ts)) {
-    console.log("Duplicate or missing ts, skipping log:", ts);
-    return res.redirect(req.query.target || req.query.url);
-  }
+if (processedTimestamps.has(ts)) {
+  console.log("Duplicate ts, skipping log:", ts);
+  return res.redirect(req.query.target || req.query.url);
+}
 
-  processedTimestamps.add(ts);
-
-  setTimeout(() => processedTimestamps.delete(ts), 60 * 1000);
+processedTimestamps.add(ts);
+setTimeout(() => processedTimestamps.delete(ts), 60 * 1000);
   
   // Determine the target URL (required for redirect + logging)
   let targetUrl = req.query.target || req.query.url;
