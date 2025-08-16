@@ -13,7 +13,11 @@ const CODA_TABLE_ID = process.env.CODA_TABLE_ID;
 app.get('/', async (req, res) => {
   console.log('Incoming request query:', req.query);
 
-  const ts = req.query.ts || Date.now().toString();
+  const ts = req.query.ts;
+if (!ts) {
+  console.log("Missing ts, skipping log.");
+  return res.redirect(req.query.target || req.query.url);
+}
 
 if (processedTimestamps.has(ts)) {
   console.log("Duplicate ts, skipping log:", ts);
