@@ -25,9 +25,9 @@ app.get("/", async (req, res) => {
   console.log("Incoming request query:", req.query);
 
   if (!ts) {
-    console.log("Missing ts, skipping log.");
-    return res.status(204).end();
-  }
+  ts = Date.now().toString();
+  console.log("No ts provided, generated:", ts);
+}
 
   if (processedTimestamps.has(ts)) {
     console.log("Duplicate ts, skipping log:", ts);
