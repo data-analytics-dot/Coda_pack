@@ -15,20 +15,18 @@ app.get("/", async (req, res) => {
     return res.status(204).end(); // no content
   }
 
-  const {
-    sop = "Unknown",
-    sopName = "Unknown",
-    target = "",
-    ts,
-  } = req.query;
+let sop = req.query.sop || "Unknown";
+let sopName = req.query.sopName || "Unknown";
+let target = req.query.target || "";
+let ts = req.query.ts;
 
-  console.log("Incoming request query:", req.query);
+console.log("Incoming request query:", req.query);
 
-// If ts is missing, generate one instead of skipping
 if (!ts) {
   ts = Date.now().toString();
   console.log("No ts provided, generated:", ts);
 }
+
 
   if (processedTimestamps.has(ts)) {
     console.log("Duplicate ts, skipping log:", ts);
