@@ -16,14 +16,13 @@ app.get("/", async (req, res) => {
     return res.status(204).end(); // no content
   }
 
- const {
-  sop = "Unknown",
-  sopName = "Unknown",
-  target = "",
-  user = "Unknown",
-  userName = "Unknown",
-  ts
-} = req.query;
+let sop = req.query.sop ? decodeURIComponent(req.query.sop) : "Unknown";
+let sopName = req.query.sopName ? decodeURIComponent(req.query.sopName) : "Unknown";
+let target = req.query.target ? decodeURIComponent(req.query.target) : "";
+let user = req.query.user ? decodeURIComponent(req.query.user) : "Unknown";
+let userName = req.query.userName ? decodeURIComponent(req.query.userName) : "Unknown";
+let ts = req.query.ts;
+
 
 console.log("Incoming request query:", req.query);
 
