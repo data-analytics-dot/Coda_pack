@@ -24,7 +24,8 @@ app.get("/", async (req, res) => {
 
   console.log("Incoming request query:", req.query);
 
-  if (!ts) {
+// If ts is missing, generate one instead of skipping
+if (!ts) {
   ts = Date.now().toString();
   console.log("No ts provided, generated:", ts);
 }
