@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
- "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/data-analytics-dot/Coda_pack.git"
   },
@@ -19,7 +19,12 @@
   },
   "homepage": "https://github.com/data-analytics-dot/Coda_pack#readme",
   "dependencies": {
+    "@codahq/packs-sdk": "^1.10.1",
+    "axios": "^1.11.0",
+    "cookie-session": "^2.1.1",
     "express": "^5.1.0",
+    "express-session": "^1.17.3",
+    "googleapis": "^133.0.0",
     "node-fetch": "^3.3.2"
   }
 }
