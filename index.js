@@ -35,27 +35,28 @@ app.use(
 );
 
 // --- Step 1: Incoming tracking link ---
+// --- Step 1: Incoming tracking link ---
 app.get("/", (req, res) => {
   const { sop, sopName, target } = req.query;
 
-  // If user already logged in, go straight to /go
-  if (req.session.user) {
-    return res.redirect("/go");
-  }
-
-  // Save pending state for after OAuth
+  // Always update pending state, even if user is logged in
   req.session.pending = { sop, sopName, target };
 
-  // Generate OAuth URL
-  const url = oauth2Client.generateAuthUrl({
-    access_type: "offline",
-    scope: ["openid", "email", "profile"],
-    login_hint: req.session.user?.email || "", // Hint account if known
-    // prompt: "none", // Uncomment to try silent login first
-  });
+  if (!req.session.user) {
+    // Generate OAuth URL
+    const url = oauth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: ["openid", "email", "profile"],
+      login_hint: req.session.user?.email || "", // optional hint
+      // prompt: "none", // optional silent login
+    });
+    return res.redirect(url);
+  }
 
-  return res.redirect(url);
+  // Already logged in → redirect immediately
+  res.redirect("/go");
 });
+
 
 // --- Step 2: OAuth callback ---
 app.get("/auth/google/callback", async (req, res) => {
