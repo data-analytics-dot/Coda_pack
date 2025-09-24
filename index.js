@@ -108,19 +108,11 @@ app.get("/go", async (req, res) => {
   hours = hours % 12 || 12; // convert 0 -> 12 for 12AM
   const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`; // e.g., "5:46:01 PM"
 
-
-   let decodedTarget;
-  try {
-    decodedTarget = decodeURIComponent(target);
-  } catch {
-    decodedTarget = target;
-  }
-  
   // ✅ Log to console
   console.log("CLICK LOG:", {
     sop,
     sopName,
-    target: decodedTarget,
+    target,
     email,
     name,
     date: dateStr,
